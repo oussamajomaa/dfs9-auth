@@ -6,8 +6,10 @@ import jwt from 'jsonwebtoken'
 const router = express.Router()
 
 router.post('/register', async(req,res)=>{
+
     try {
-        const {username, email, password} = req.body
+        const {username, email, password, role} = req.body
+        console.log(req.body)
         const user = await User.findOne({email})
         if (user){
             return res.status(400).json({message:'Cet utilisateur existe déjà'})
@@ -15,7 +17,7 @@ router.post('/register', async(req,res)=>{
 
         const hash = await bcrypt.hash(password, 10)
     
-        await User.create({username,email,password:hash})
+        await User.create({username,email,password:hash, role})
         res.status(201).json({message:'Utilisateur créé !'})
 
     }catch(err) {
@@ -39,11 +41,11 @@ router.post('/login-localstorage', async(req,res)=>{
         }
 
         const token = jwt.sign(
-            {id:user._id, username:user.username},
+            {id:user._id, username:user.username, role:user.role},
             process.env.JWT_SECRET,
             {expiresIn:'1h'}
         )
-        res.status(200).json({token,message:"Vousêtes connecté !"})
+        res.status(200).json({token,role:user.role})
 
 
     }catch(err){
@@ -60,6 +62,7 @@ function verifyToken(req,res,next){
             return res.status(403).json({message:"token manquant !"})
         }
         const decode = jwt.verify(token, process.env.JWT_SECRET)
+        
         req.user = decode
 
         next()
@@ -68,8 +71,17 @@ function verifyToken(req,res,next){
     }
 }
 
-router.get('/protected',verifyToken, async(req,res)=>{
-
-    res.status(200).json({message:req.user.username})
+router.get('/admin',verifyToken, async(req,res)=>{
+    if (req.user.role !== "admin") {
+        return res.status(403).json({message:"Accès interdit"})
+    }
+    const users = await User.find()
+    res.status(200).json(users)
 })
+
+router.get('/profile',verifyToken, async(req,res)=>{
+    const user = await User.findById(req.user.id)
+    res.status(200).json(user)
+})
+
 export default router

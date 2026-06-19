@@ -1,0 +1,29 @@
+main {
+    height: calc(100vh - 68px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    width: 460px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+input, button, select{
+    padding: 8px;
+    border-radius: 5px;
+}
+select{
+    color: #929292;
+}
+
+nav{
+    /* position: absolute; */
+    background: rgb(203, 203, 251);
+
+}
