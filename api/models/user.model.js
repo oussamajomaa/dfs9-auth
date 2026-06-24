@@ -11,18 +11,19 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
-    password:{
+    password: {
         type: String,
-        required:true,
-        minLength:8,
-        trim:true
+        required: true,
+        minLength: 8,
+        trim: true
     },
     role: {
-        type:String,
+        type: String,
         required: true,
-        default: 'user'
-    }
+    },
+    image:{type:String},
+    isActive: {type: Boolean, default: false}
 })
 
-const User = mongoose.model('users',userSchema)
+const User = mongoose.model('users', userSchema)
 export default User

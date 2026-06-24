@@ -1,56 +1,58 @@
 import { useState } from "react"
-import { useNavigate,Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
+const BASE_URL = "http://localhost:3000/login-cookie"
 
 export default function Login() {
+    const [email, setEmail] = useState("")
+    const [password, setpassword] = useState("")
+    const navigate = useNavigate()
 
-	const [email, setEmail] = useState("")
-	const [password, setpassword] = useState("")
+    async function handleSubmit(e) {
+        e.preventDefault()
+        try {
+            const response = await fetch(BASE_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+                credentials: "include"
+            })
+            
+            if (!response.ok) {
+                throw new Error('Forbidden')
+            }
+            
+            const data = await response.json()
+            localStorage.setItem('role',data.user.role)
+            localStorage.setItem('image',data.user.image)
 
-	const navigate = useNavigate()
-	async function handleSubmit(e) {
-		e.preventDefault()
-		try{
+            if (data.user.role === 'admin') {
+                navigate('/admin')
+            } else {
+                navigate('/profile')
+            }
 
-			const response = await fetch('http://localhost:3000/login-localstorage', {
-				method: 'POST',
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({ email, password })
-			})
-			console.log(response)
-			const data = await response.json()
-			localStorage.setItem('token', data.token)
-			localStorage.setItem('role', data.role)
-			console.log(data)
-			if (data.role === 'admin') {
-				navigate('/admin')
-			}
-			if (data.role === 'user'){
-				navigate('/profile')
-			}
-		}catch(err) {
-			console.log(err)
-		}
-	}
-	return (
-		<main>
-			<form onSubmit={handleSubmit}>
-				<input
-					type="email"
-					placeholder="Email..."
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<input
-					type="password"
-					placeholder="Password"
-					onChange={(e) => setpassword(e.target.value)}
-				/>
-				<button>Connexion</button>
-				<Link to={'/register'}>Inscription</Link>
-			</form>
+        } catch (err) {
+            console.error("Erreur de connexion :", err)
+        }
+    }
 
-		</main>
-	)
+    return (
+        <main>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    placeholder="Email..."
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setpassword(e.target.value)}
+                />
+                <button>Connexion</button>
+                <Link to={'/register'}>Inscription</Link>
+            </form>
+        </main>
+    )
 }

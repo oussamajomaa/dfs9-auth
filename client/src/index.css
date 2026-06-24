@@ -18,9 +18,7 @@ input, button, select{
     padding: 8px;
     border-radius: 5px;
 }
-select{
-    color: #929292;
-}
+
 
 nav{
     /* position: absolute; */
