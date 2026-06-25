@@ -21,7 +21,7 @@ export default function Register() {
 			const response = await fetch('http://localhost:3000/register', {
 				method: 'POST',
 				body: formData,
-				// credentials: "include"
+				credentials: "include"
 			})
 			if (!response.ok) {
 				throw new Error("Erreur lors de l'inscription")

@@ -52,6 +52,7 @@ export default function Login() {
                 />
                 <button>Connexion</button>
                 <Link to={'/register'}>Inscription</Link>
+                <Link to={'/forgot-password'}>Mot de passe oublié</Link>
             </form>
         </main>
     )

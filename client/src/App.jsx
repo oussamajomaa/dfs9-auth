@@ -6,6 +6,10 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Profile from './pages/Profile'
 import { useState, useEffect } from 'react'
+import VerifyEmail from './pages/VerifyEmail'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+
 
 function App() {
   const [user, setUser] = useState(null)
@@ -45,6 +49,10 @@ function App() {
         <Route path='register' element={<Register />} />
         <Route path='admin' element={<Admin />} />
         <Route path='profile' element={<Profile />} />
+        <Route path='verify-email' element={<VerifyEmail />} />
+        <Route path='forgot-password' element={<ForgotPassword />} />
+        <Route path='reset-password' element={<ResetPassword />} />
+
       </Routes>
     </BrowserRouter>
   )

@@ -4,9 +4,11 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 dotenv.config()
 
+
 import cors from 'cors'
 
 import authRoute from './routes/auth.route.js'
+
 
 const app = express()
 app.use(cookieParser())

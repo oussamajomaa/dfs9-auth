@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String
@@ -22,7 +24,8 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     image:{type:String},
-    isActive: {type: Boolean, default: false}
+    isActive: {type: Boolean, default: false},
+    token: {type:String}
 })
 
 const User = mongoose.model('users', userSchema)
